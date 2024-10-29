@@ -1,0 +1,53 @@
+version: '3.8'
+
+services:
+  api-gateway:
+    build: ./api-gateway
+    ports:
+      - "3000:3000"
+    environment:
+      - JWT_SECRET=your_jwt_secret_key
+      - USER_SERVICE_URL=http://user-service:4001
+      - PRODUCT_SERVICE_URL=http://product-service:4002
+      - CATEGORY_SERVICE_URL=http://category-service:4003
+    depends_on:
+      - user-service
+      - product-service
+      - category-service
+
+  user-service:
+    build: ./services/users
+    ports:
+      - "4001:4001"
+    environment:
+      - MONGODB_URI=mongodb://mongo:27017/users
+    depends_on:
+      - mongo
+
+  product-service:
+    build: ./services/products
+    ports:
+      - "4002:4002"
+    environment:
+      - MONGODB_URI=mongodb://mongo:27017/products
+    depends_on:
+      - mongo
+
+  category-service:
+    build: ./services/categories
+    ports:
+      - "4003:4003"
+    environment:
+      - MONGODB_URI=mongodb://mongo:27017/categories
+    depends_on:
+      - mongo
+
+  mongo:
+    image: mongo:latest
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongodb_data:/data/db
+
+volumes:
+  mongodb_data:

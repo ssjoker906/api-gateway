@@ -1,0 +1,17 @@
+{
+  "name": "pet-shop-microservices",
+  "version": "1.0.0",
+  "private": true,
+  "workspaces": [
+    "api-gateway",
+    "services/*"
+  ],
+  "scripts": {
+    "start": "docker-compose up",
+    "dev": "docker-compose up --build",
+    "down": "docker-compose down"
+  },
+  "dependencies": {
+    "dotenv": "^16.3.1"
+  }
+}
